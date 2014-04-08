@@ -1,0 +1,148 @@
+# Default configuration that all Overcommit configurations inherit from.
+#
+# This is an opinionated list of which hooks are valuable to run and what their
+# out-of-the-box settings should be.
+
+# Where to store hook plugins specific to a repository. These are loaded in
+# addition to the default hooks Overcommit comes with. The location is relative
+# to the root of the repository.
+plugin_directory: '.git-hooks'
+
+# Hooks that run after HEAD changes or a file is explicitly checked out. Useful
+# for updating source tags (e.g. via ctags) or warning about new migrations,
+# etc.
+PostCheckout:
+  ALL:
+    required: false
+    quiet: false
+  BundleCheck:
+    description: 'Checking Gemfile dependencies'
+    include:
+      - 'Gemfile'
+      - 'Gemfile.lock'
+      - '*.gemspec'
+  IndexTags:
+    description: 'Indexing source code tags'
+
+# Hooks that are run after `git commit` is executed, before the commit message
+# editor is displayed. These hooks are ideal for syntax checkers, linters, and
+# other checks that you want to run before you allow a commit object to be
+# created.
+PreCommit:
+  ALL:
+    requires_files: true
+    required: false
+    quiet: false
+
+  AuthorEmail:
+    description: 'Checking author email'
+    requires_files: false
+    required: true
+    quiet: true
+    pattern: '^[^@]+@.*$'
+
+  AuthorName:
+    description: 'Checking for author name'
+    requires_files: false
+    required: true
+    quiet: true
+
+  BundleCheck:
+    description: 'Checking Gemfile dependencies'
+    include:
+      - 'Gemfile'
+      - 'Gemfile.lock'
+      - '*.gemspec'
+
+  CoffeeLint:
+    description: 'Analyzing with coffeelint'
+    include: '**/*.coffee'
+
+  CssLint:
+    description: 'Analyzing with csslint'
+    include: '**/*.css'
+
+  HamlLint:
+    description: 'Analyzing with haml-lint'
+    include: '**/*.haml'
+
+  HardTabs:
+    description: 'Checking for hard tabs'
+
+  ImageOptim:
+    description: 'Checking for optimizable images'
+    include:
+      - '**/*.gif'
+      - '**/*.jpg'
+      - '**/*.jpeg'
+      - '**/*.png'
+    enabled: false
+
+  Jscs:
+    description: 'Analyzing with JSCS'
+    include: '**/*.js'
+    enabled: false
+
+  JsHint:
+    description: 'Analyzing with JSHint'
+    include: '**/*.js'
+    enabled: false
+
+  PythonFlake8:
+    description: 'Analyzing with flake8'
+    include: '**/*.py'
+
+  Rubocop:
+    description: 'Analyzing with Rubocop'
+    include:
+      - '**/*.gemspec'
+      - '**/*.rake'
+      - '**/*.rb'
+      - '**/Gemfile'
+      - '**/Rakefile'
+
+  ScssLint:
+    description: 'Analyzing with scss-lint'
+    include: '**/*.scss'
+
+  TrailingWhitespace:
+    description: 'Checking for trailing whitespace'
+
+  TravisLint:
+    description: 'Checking Travis CI configuration'
+    include: '.travis.yml'
+
+  YamlSyntax:
+    description: 'Checking YAML syntax'
+    include: '**/*.yml'
+
+# Hooks that are run against every commit message after a user has written it.
+# These hooks are useful for enforcing policies on commit messages written for a
+# project.
+CommitMsg:
+  ALL:
+    requires_files: false
+    quiet: false
+
+  GerritChangeId:
+    enabled: false
+    description: 'Ensuring Gerrit Change-Id is present'
+    required: true
+
+  HardTabs:
+    description: 'Checking for hard tabs'
+
+  RussianNovel:
+    description: 'Checking length of commit message'
+    quiet: true
+
+  SingleLineSubject:
+    description: 'Checking subject line'
+
+  TextWidth:
+    description: 'Checking text width'
+    max_subject_width: 60
+    max_body_width: 72
+
+  TrailingPeriod:
+    description: 'Checking for trailing periods in subject'
