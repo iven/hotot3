@@ -1,5 +1,5 @@
 doctype html
-html
+html ng-app="HototApp"
   head
     meta charset="utf-8"
     title
@@ -7,9 +7,12 @@ html
     /! build:css /styles/main.css
     link rel="stylesheet" href="/styles/main.css"
     /! endbuild
-  body
+  body ng-controller="HototCtrl as hotot"
     h1
-      | 'Allo
+      | {{ hotot.alloText }}
+    /! build:js /scripts/vender.js
+    script src="/bower_components/angular/angular.js"
+    /! endbuild
     /! build:js /scripts/index.js
     script src="/scripts/index.js"
     /! endbuild
